@@ -1,0 +1,68 @@
+
+一、出错1**************************
+
+项目可以启动，不报错，但是打开页面为空白，也不显示下面的信息
+
+2016-08-08 16:39:37,279    INFO - .web.servlet.DispatcherServlet
+
+分析自己对程序的改动，只是对程序的改动只是添加了分页的类
+
+PaginatedList<RelateEnterpriseInfo>
+
+这个类添加了maven类库  
+jd-common-util
+
+此maven依赖  依赖spring 2.6  而本项目采用的是spring 3
+
+故需要配置
+
+ <dependency>
+            <groupId>com.jd.common</groupId>
+            <artifactId>jd-common-util</artifactId>
+            <version>1.1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+二、出错2******************8
+
+提示不能明确的 JDDataSourceService 
+     autowired   @Autowired
+    private JDDataSourceService dsService;
+
+有两个来源
+
+   因为配置了两个一模一样的扫包，因而装配了两次
+
+ <context:component-scan base-package="com.jd.scf.erp.web.action" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <context:component-scan base-package="com.jd.scf.erp">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+当去掉了一个后，访问页面又不行
+
+注意上面两个扫包的配置不完全一样，一个是扫controller，一个是扫所有，两个都不能少
+
+
+二、出错2****************
+
+ @RequestParam(value = "pageSize", required = false) 
+
+  此参数默认为true如果不带必须要的参数，则会找不到路径，一定要注意
+
+ @RequestMapping("listRelateEnterprise")
+    public String listRelateEnterprise(Model view, @ModelAttribute RelateEnterpriseInfo reInfo,
+                       @RequestParam(value = "page", required = false) Integer page,
+                       @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                        @RequestParam(value="dataSourceNumber")String dataSourceNumber) {
+
+
+"dataSourceNumber"必须要有，一定要注意

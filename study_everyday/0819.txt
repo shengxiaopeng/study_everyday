@@ -1,0 +1,61 @@
+cglib 动态代理，通过代码增强技术实现
+      代理类是目标类的子类
+
+jdk动态代理
+     代理类与目标类实现了共同的接口
+
+
+如果目标类实现了接口，则采用了jdk动态代理
+如果目标类未实现接口，则采用cglib动态代理
+
+如果想强制使用cglibproxy  在aop:config下有个属性
+将proxy-target-class的值设为true  则目标类的代理类肯定是cglib产生的
+
+   有些情况必须使用cglib proxy  比如目标类必须实现serializable接口？？？？？多思考一下
+
+
+
+
+============================================AOP示例========================================================
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+  	<bean id="personDao" class="com.itheima12.spring.aop.xml.transaction.PersonDaoImpl"></bean>
+  	<bean id="transaction" class="com.itheima12.spring.aop.xml.transaction.Transaction"></bean>
+  	
+  	<aop:config>
+  		<!-- 
+  			切入点表达式  确定目标类
+  		 -->
+  		<aop:pointcut 
+  			expression="execution(* com.itheima12.spring.aop.xml.transaction.PersonDaoImpl.*(..))" 
+  			id="perform"/>
+  		<!-- 
+  			ref指向的对象就是切面
+  		 -->
+  	    <aop:aspect ref="transaction">
+  	    	<aop:before method="beginTransaction" pointcut-ref="perform"/>
+  	    	<aop:after-returning method="commit" pointcut-ref="perform"/>
+  	    </aop:aspect>
+  	</aop:config>
+</beans>
+
+
+/**
+ * 原理：
+ *    1、当spring容器启动的时候，加载两个bean,对两个bean进行实例化
+ *    2、当spring容器对配置文件解析到<aop:config>的时候
+ *    3、把切入点表达式解析出来，按照切入点表达式匹配spring容器内容的bean
+ *    4、如果匹配成功，则为该bean创建代理对象
+ *    5、当客户端利用context.getBean获取一个对象时，如果该对象有代理对象，则返回代理对象
+ *         如果没有代理对象，则返回对象本身
+ * @author zd
+ *
+ */

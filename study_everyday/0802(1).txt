@@ -1,0 +1,83 @@
+部署项目：
+
+   1 从source.jd.com上 clone一个项目到本地
+   2 idea直接 file→open（pom文件即可） 等待下载。。。
+ 
+   3  配置tomcat
+       1）server部分配置   
+              选本地的tomcat 
+              http://customer.local.jd.com:8080/
+              注意一定是域名   localhost会导到登录页  （spring做了拦截   如果不是域名则重定向）
+              
+       2）deploy配置
+             添加war exploded
+   4 maven的setting文件 
+
+      在file --  settings   --Build-- Build Tools --maven中设置一下  User setting file
+ 
+     5 View --Tool Window --Maven Projects中进行相应的设置
+           0） 刷新符号，可刷新jar包
+
+           1） profiles是相应的测试环境
+                  --develop    
+                  --production  
+                  --test
+
+               必须要勾选一个  一般选develop
+
+               在spring-config.xml中  体现在  →
+                   <value>classpath:props/${property-path}.properties</value>
+   
+
+          2）项目的lifecycle事maven的生命周期  出现异常问题
+               可先clean --install尝试一下
+
+
+    6  输出路径并不是tomcat的webapps下
+        而是
+          E:\git_source\scf-customer-platform\scf-customer-platform-web\target\scf-customer-platform-web-1.0.0
+
+        这个可以看  file--project structure
+
+        最后访问：
+        http://customer.local.jd.com:8080/scfcp/home.htm
+         
+
+        修改输出路径到webapps下  不行，看来还有些东西，是没有理解的，后续再继续看
+        
+
+     7  项目采取的是velocity 模板
+           controller中 返回的路径  的解析交给了  velocity
+           
+           <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/vm/"/>
+
+       <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="layoutUrl" value="layout/default.vm"/>
+        <!--指定vm默认布局模板-->
+        <property name="cache" value="false"/>
+        <!--是否缓存模板-->
+        <property name="suffix" value=".vm"/>
+             
+
+         只看到了后缀，没有看到前缀，只看到   <bean id="velocityConfig"  有这个部分
+
+
+     8  mybatis 相关
+         
+           mybatis的映射文件应该都在  platform-web →
+                                      src  → main → resources →  sqlmap下
+
+             而中邮项目  没有对数据库的操作，全部都是调用接口，故此处没有
+
+           操作数据库的接口文件应该都在  platform-dao→
+                                      src  → main → resources →  com.jd...dao下
+
+     9      
+             scf-customer-platform是项目
+                  platform-web
+                  platform-dao  等等是下面的模块
+                
+
+
+     

@@ -1,0 +1,32 @@
+Could not autowire field: private com.jd.scf.erp.dao.DataSourceDao 
+
+     不能够自动注入  DataSourceDao 
+
+      spring-config-db.xml 要修改
+   
+     <bean id="resellSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="scfDataSource"/>
+        <property name="mapperLocations" value="classpath:sqlmap/mapper/*.xml"/>
+        <property name="typeAliasesPackage" value="com.jd.scf"/>
+        <property name="configLocation" value="classpath:sqlmap/mybatis-configuration.xml"/>
+    </bean>
+    <!-- mapperScanner，普通扫描类 -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer" autowire="no">
+        <property name="basePackage" value="com.jd.scf"/>
+        <property name="sqlSessionFactoryBeanName" value="resellSqlSessionFactory"/>
+    </bean>
+
+    扫包的地方要注意
+
+
+    2.。。。
+    spring-cinfig-utils.xml   以及spring-config-servlet.xml中
+   
+    <context:component-scan base-package="com.jd.scf" >
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+     两个配置文件其实重了，有一个就行
+
+
+     下来查一下，@service 与@ repository的区别

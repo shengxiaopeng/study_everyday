@@ -1,0 +1,48 @@
+
+1）
+AccoutSource 表没有对应的remark
+   对应mapper中的remark没有加    ，对应的domain已经加了
+
+
+
+2）
+AccoutSource  是按id倒序，而id是自增，正序列更科学
+
+  <sql id="ORDER-SQL">
+        order by id desc
+    </sql>
+
+3）查询发现   核心企业查询
+   企业简码  起不到筛选的作用
+   
+      <sql id="COMMON-SQL">
+
+        <where>
+            <if test="yn == null">AND yn =1</if>
+            <if test="yn != null">AND yn =#{yn}</if>
+            <if test="id != null">AND id = #{id}</if>
+            <if test="name != null">AND name = #{name}</if>
+            <if test="souceCode !=null">AND souce_code = #{souceCode}</if>
+        </where>
+
+    </sql>
+
+     =====问题  COMMON-SQL 遗漏了 企业简码 code
+
+
+ 4）两个表的查询分页的部分  查询字段没有引用all-fields   漏了remark
+
+       <select id="getAccountSourceByPage" resultMap="AccountSource-Map" parameterType="java.util.HashMap">
+        <![CDATA[
+			SELECT  id,code,name,create_time,update_time,yn FROM account_source
+		]]>
+        <include refid="COMMON-SQL" />
+        <include refid="ORDER-SQL" />
+        LIMIT #{startRow},#{pageSize}
+    </select>
+
+    ===========两个查询分页 没有用到all-fields   漏了remark
+           
+  
+
+   

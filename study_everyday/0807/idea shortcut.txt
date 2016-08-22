@@ -1,0 +1,42 @@
+
+
+Use Ctrl+Shift+Enter to complete a current statement 
+such as if, do-while, try-catch, return (or a method call) into a syntactically correct construct (e.g. add curly braces).
+
+
+alt+enter: quick fix
+
+ctrl+alt+v :extract variables
+
+ctrl+shift+↑  move lines
+ctrl+shift+↓
+
+alt +↑ 上一个方法
+
+ctrl +h  继承层次
+
+2.ctrl+f 
+当前文件查找特定内容
+
+3.ctrl+shift+f
+当前项目查找包含特定内容的文件
+
+4.ctrl+n 
+查找类
+
+5.ctrl+shift+n
+
+
+6.ctrl+e 
+最近的文件  与工具箱
+
+7.alt+F7
+非常非常频繁使用的一个快捷键，可以帮你找到你的函数或者变量或者类的所有引用到的地方
+
+alt+insert
+非常非常以及相当方便的一个组合键，不信您往下看
+在类中使用：
+可以自动生成构造器、getter/setter等等常用方法
+在项目目录上使用：
+可用于新建各种文件。
+

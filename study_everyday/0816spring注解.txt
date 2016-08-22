@@ -1,0 +1,89 @@
+/**
+ * 原理
+ *    1、当启动spring容器的时候，创建两个对象
+ *    2、当spring容器解析到
+ *    		 <context:annotation-config></context:annotation-config>
+ *        spring容器会在spring容器管理的bean的范围内查找这些类的属性上面是否加了@Resource注解
+ *    3、spring解析@Resource注解的name属性
+ *    		如果name属性为""
+ *              说明该注解根本没有写name属性
+ *              spring容器会得到该注解所在的属性的名称和spring容器中的id做匹配，如果匹配成功，则赋值
+ *                                                               如果匹配不成功,则按照类型进行匹配
+ *          如果name属性的值不为""
+ *               则按照name属性的值和spring的id做匹配，如果匹配成功，则赋值，不成功，则报错
+ *   说明:
+ *       注解只能用于引用类型
+ *       注解写法比较简单,但是效率比较低
+ *       xml写法比较复杂，但是效率比较高
+ * @author zd
+ *
+ */
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+
+public class Person {
+	@Resource(name="student")
+//	@Autowired  //按照类型进行匹配
+//	@Qualifier("student")
+	private Student student;
+
+	public Student getStudent() {
+		return student;
+	}
+}
+
+@Resource(name="student") 是javax的    =====方式1
+   
+@Autowired  //按照类型进行匹配        ====方式2
+@Qualifier("student")   //按id
+
+
+两种方式等价
+
+
+
++++++++++++++++san+++++++++++++++++++++++++=
+ <!-- 
+   		component:把一个类放入到spring容器中,该类就是一个component
+   		在base-package指定的包及子包下扫描所有的类
+    -->
+   <context:component-scan base-package="com.itheima12.spring.scan">
+   </context:component-scan>
+
+
+/**
+ * 原理
+ *   1、启动spring容器，spring容器解析配置文件
+ *   2、当解析到<context:component-scan base-package="com.itheima12.spring.scan">
+   			</context:component-scan>
+   	     就会在上面指定的包及子包中扫描所有的类，看哪些类上面有@Component注解
+   	 3、如果有该注解，则有如下的规则：
+   	      @Component
+   	      public class PersonDaoImpl{
+   	      
+   	      }
+   	      ==
+   	      <bean id="personDaoImpl" class"..."/>   id的值：把类的第一个字母变成小写，其他字母不变
+   	      
+   	      @Component("personDao")
+   	      public class PersonDaoImpl{
+   	      
+   	      }
+   	      ==
+   	      <bean id="personDao"  class=".."/>
+   	  4、按照@Resource注解的规则进行赋值
+ * @author zd
+ *
+ */
+
+
+  @Component 与 @Controller @Service @Repository等价
+     @Controller @Service @Repository只是@Component的语义化
+
+
+
+

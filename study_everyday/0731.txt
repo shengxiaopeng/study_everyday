@@ -1,0 +1,6 @@
+1 git 相关
+   git checkout --file 是撤销
+   git checkout branchname 则是切换分支
+
+
+   git branch branchname则是创建分支   有关分支可以看相关博客

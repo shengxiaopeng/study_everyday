@@ -1,0 +1,8 @@
+
+问题一：
+HTML中input框里面添加disabled属性之后，该内容无法向上提交
+
+disabled本身是禁用这个Input，所以是无法提交的。
+你还可以用readonly这个属性来禁止用户修改，可以正常提交
+
+

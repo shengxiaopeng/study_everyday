@@ -1,0 +1,53 @@
+
+保理2采取了  前后台分离的策略：
+
+    scf-component中只含有服务，并无页面，也没有controller等
+
+
+客户管理
+   客户信息查询
+     ●导航栏进入是   toListCustomerInfo
+       通过查询进入是 listCustomerInfo
+
+     ● 注意企业信息JdScfCompanyInfo 有默认的 page与pageSize
+
+
+     ● listJdScfCustomerInfo.vm是最后导向的页面
+          注意最后的
+         <div class="pages">
+                      #set($formId="pageForm")
+                              #showPageFormSubmit($appInfos $formId)
+                    </div>
+         时使用的 macro.vm中的宏
+             #macro (showPageFormSubmit  $page  $formId)
+     
+
+    
+      src/main/java
+              /resources    都是在classpath下的
+     
+
+   买方产品配置 → 买方产品配置更像是客户产品配置
+      
+       ● 新增买方产品配置
+
+           
+
+           点击保存后通过前端函数保存信息   （包括 客户信息、产品信息、补录信息）
+
+               $("#saveData").click
+                     checkInfo()
+                          checkCompanyInfo()
+                          checkBlinfo()
+
+           
+           新增 买方产品信息时  向数据库添加两部分信息
+
+           1）客户产品信息   jd_scf_buyer_customer_product
+           2) 添加审核流（审核记录）  jd_scf_workflow   
+
+           
+           
+        
+
+    

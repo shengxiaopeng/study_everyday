@@ -1,0 +1,17 @@
+如上图标注 1 所示，.idea 即为 Project 的配置文件目录。
+如上图标注 2 所示，.iml 即为 Module 的配置文件。
+
+IntelliJ IDEA 是一个没有 Ctrl + S 的 IDE，所以每次修改完代码你只要管着运行或者调试即可，无需担心保存或者丢失代码。
+
+
+1）Revent 操作 未commit之前 可通过Revent返回
+2）commit了则需要通过  Repository--reset Head--选择对应的版本号回滚
+
+
+=====
+  git --Repository-- stash
+
+  ● 保存的是当前的工作现场，只要是受git管理的文件（ tracked files）的状态，全部都保存起来了   ，不需要非要git add的文件
+
+   ●   git --Repository-- unstash可选择工作现场进行恢复  ，
+        （等干完了别的工作，切换分支回来，再恢复暂存区，恢复暂存区并不会删除暂存区，要选择手动删除）

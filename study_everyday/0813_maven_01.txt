@@ -1,0 +1,113 @@
+maven 构建配置文件
+构建配置文件是一组配置的集合，用来设置或者覆盖 Maven 构建的默认配置。
+使用构建配置文件，可以为不同的环境定制构建过程，例如 Producation 和 Development 环境。
+
+
+
+<project>
+<profiles>
+
+<profile>
+<id>test</id>
+....
+<profile>
+
+<profile>
+<id>dev</id>
+....
+<profile>
+
+<profile>
+<id>prod</id>
+....
+<profile>
+
+</profiles>
+
+</project>
+
+
+profile的触发方式，这里简单介绍两种：
+ 1 命令行
+ 打开命令控制台，跳转到 pom.xml 所在目录，并执行以下 mvn 命令。使用 -P 选项指定 Profile 的名称。
+
+C:\MVN\project>mvn test -Ptest
+
+  2)maven的setting.xml
+  
+打开 Maven 的 settings.xml 文件，该文件可以在 %USER_HOME%/.m2 目录下找到，%USER_HOME% 表示用户主目录。如果 settings.xml 文件不存在则需要创建一个。
+
+像在下面例子中展示的一样，使用 activeProfiles 节点添加 test 配置作为激活的 Profile。
+
+<settings xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/settings-1.0.0.xsd">
+   <mirrors>
+      <mirror>
+         <id>maven.dev.snaponglobal.com</id>
+         <name>Internal Artifactory Maven repository</name>
+         <url>http://repo1.maven.org/maven2/</url>
+         <mirrorOf>*</mirrorOf>
+      </mirror>
+   </mirrors>
+   <activeProfiles>
+      <activeProfile>test</activeProfile>
+   </activeProfiles>
+</settings>
+现在打开命令控制台，跳转到 pom.xml 所在目录，并执行下面的 mvn 命令。不要使用 -P 选项指定 Profile 的名称。Maven 将显示被激活的 test Profile 的结果。
+
+C:\MVN\project>mvn test
+
+
+仓库======
+
+Maven 依赖搜索顺序
+当我们执行 Maven 构建命令时，Maven 开始按照以下顺序查找依赖的库：
+
+步骤 1 － 在本地仓库中搜索，如果找不到，执行步骤 2，如果找到了则执行其他操作。
+
+步骤 2 － 在中央仓库中搜索，如果找不到，并且有一个或多个远程仓库已经设置，
+          则执行步骤 4，如果找到了则下载到本地仓库中已被将来引用。
+
+步骤 3 － 如果远程仓库没有被设置，Maven 将简单的停滞处理并抛出错误（无法找到依赖的文件）。
+
+步骤 4 － 在一个或多个远程仓库中搜索依赖的文件，如果找到则下载到本地仓库已被将来引用，
+          否则 Maven 将停止处理并抛出错误（无法找到依赖的文件）。
+
+
+
+什么是快照？
+快照是一个特殊的版本，它表示当前开发的一个副本。与常规版本不同，Maven 为每一次构建从远程仓库中检出一份新的快照版本。
+
+现在数据服务团队会将每次更新的代码的快照（例如 data-service:1.0-SNAPSHOT）发布到仓库中，来替换旧的快照 jar 文件。
+
+快照 vs 版本
+ 对于版本，Maven 一旦下载了指定的版本（例如 data-service:1.0），它将不会尝试从仓库里再次下载一个新的 1.0 版本。
+   想要下载新的代码，数据服务版本需要被升级到 1.1。
+
+对于快照，每次用户接口团队构建他们的项目时，Maven 将自动获取最新的快照（data-service:1.0-SNAPSHOT）。
+
+
+依赖管理==================================================
+
+下面是上述依赖图表的细节：
+
+App-UI-WAR 依赖于 App-Core-lib 和 App-Data-lib.
+Root 是 App-Core-lib 和 App-Data-lib 的父类。
+Root 在其依赖模块里定义了 Lib1,lib2, Lib3 3个依赖关系。
+
+下面是上述依赖图表的细节：
+
+App-UI-WAR 依赖于 App-Core-lib 和 App-Data-lib.
+Root 是 App-Core-lib 和 App-Data-lib 的父类。
+Root 在其依赖模块里定义了 Lib1,lib2, Lib3 3个依赖关系。
+
+
+
+
+
+
+
+
+
