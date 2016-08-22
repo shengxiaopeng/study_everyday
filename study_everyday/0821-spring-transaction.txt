@@ -1,0 +1,68 @@
+说明：    1、在AbstractFlatformTransactionManager中的commit方法中          
+                 1、如果有异常要回滚                
+                  processRollback()               
+                     具体的处理回滚的信息要交给具体的事务管理器                
+                               HibernateTransactionManager                   
+                               DataSourceTransactionManager                  
+                              JdoTransactionManager          
+          2、如果没有异常，要提交                
+                  processCommit();             
+                    具体处理提交的信息要交给具体的事务管理器                   
+                              HibernateTransactionManager               
+                              DataSourceTransactionManager                 
+                              JdoTransactionManager   
+
+
+ 2、在AbstractFlatformTransactionManager中的doGetTransaction方法是一个抽象方法，       
+    具体的事务管理器实现该方法得到具体的事务对象
+
+
+=================================================
+spring在调用具体的事务管理器之前做了一些准备工作，
+提前设置事务的读写策略，而这些事务策略是公共的东西，
+是写在spring的配置文件中的，而这些内容的处理需要放在抽象类中去做
+                            (公共的东西放到抽象类中)
+
+
+
+配置示例：
+
+   	<!-- 
+		事务管理器
+	 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory2"/>
+		</property>
+	</bean>
+	
+	<!-- 
+		事务的声明
+
+                告诉spring容器事务管理器
+                告诉spring容器，什么样的目标方法使用什么样的事务策略
+	 -->
+	<tx:advice  transaction-manager="transactionManager" id="tx">
+		<tx:attributes>
+			<!-- 
+                              name 目标方法的范围
+                              isolation   隔离机制
+			      propagation传播属性，解决事务的嵌套问题													
+
+
+				read-only
+				   true   只读事务
+				   false  读写事务
+			 -->
+			<tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED"
+			  read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut 
+			expression="execution(* com.itheima12.spring.hibernate.transaction.service.impl.*.*(..))" 
+			id="perform"/>
+		<aop:advisor advice-ref="tx" pointcut-ref="perform"/>
+	</aop:config>
+

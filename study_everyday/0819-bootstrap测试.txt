@@ -1,0 +1,73 @@
+  <div class="container-fluid">
+
+         <div class="row">
+<h4 class="page-header">组件管理</h4>
+
+         </div>
+
+
+         <div class="row">
+             <div class="col-lg-12">
+             <table id="t1" style="width: 90%;">
+                 <tr>
+                     <td width="30%">
+                         <div class="panel panel-default">
+                             <div class="panel-heading">
+                                 hello
+
+                             </div>
+                             <div class="panel-body">
+                                 world
+
+                             </div>
+
+                         </div>
+
+
+                     </td>
+
+
+                     <td width="70%">
+                         <div class="panel panel-default">
+                             <div class="panel-heading">
+                                 hello
+
+                             </div>
+                             <div class="panel-body">
+                                 world
+
+                             </div>
+
+                         </div>
+
+                     </td>
+                 </tr>
+             </table>
+             </div>
+         </div>
+
+
+1 container 与container-fluid
+  container 一般会把内容居中、container-fluid则是向左(占满其容器)
+
+2 row 与col-lg-12
+   
+   这两个div可以将所在容器填满，但是row完全靠左，col-lg-12一般有一定的间隙
+
+   ************
+   需要水平分割  用class="row"
+   需要垂直分割  用class="col-md-X"  0<X<=12
+
+ 
+      
+
+
+3<div class="panel panel-default">
+   <div class="panel-heading">
+     <div class="panel-body">
+                两者一起共同构成了一组带头和内容的容器
+
+
+                
+
+                            
