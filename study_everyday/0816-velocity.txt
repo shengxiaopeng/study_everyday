@@ -1,0 +1,130 @@
+
+ 注释
+## This is a single line comment.
+
+#*
+ Thus begins a multi-line comment. Online visitors won't
+ see this text because the Velocity Templating Engine will
+ ignore it.
+*#
+
+ 引用
+    属性
+      $customer.Address
+      $purchase.Total
+
+    方法
+     
+$customer.getAddress()
+$purchase.getTotal()
+
+
+3.       指令
+
+    
+#set( $monkey = $bill ) ## variable reference
+#set( $monkey.Friend = "monica" ) ## string literal
+#set( $monkey.Blame = $whitehouse.Leak ) ## property reference
+#set( $monkey.Plan = $spindoctor.weave($web) ) ## method reference
+#set( $monkey.Number = 123 ) ##number literal
+#set( $monkey.Say = ["Not", $my, "fault"] ) ## ArrayList
+
+
+条件
+
+    <strong>Go North</strong>
+#elseif( $foo == 10 )
+    <strong>Go East</strong>
+#elseif( $bar == 6 )
+    <strong>Go South</strong>
+#else
+    <strong>Go West</strong>
+#end
+
+
+关系
+    && || ! == !=
+
+
+
+循环
+
+#foreach( $product in $allProducts )
+    <li>$product</li>
+#end
+
+包含
+
+
+#include( "one.gif","two.txt","three.htm" )
+
+#parse( "me.vm" )   ##和 #include 指令不一样， #parse 只有一个参数。
+
+
+
+
+Count down.
+#set( $count = 8 )
+#parse( "parsefoo.vm" )
+All done with dofoo.vm!
+
+    ##parsefoo.vm 可以使用$count
+
+
+宏
+
+
+#macro( d )
+<tr><td></td></tr>
+#end
+
+
+#d()
+
+
+
+#macro( tablerows $color $somelist )
+#foreach( $something in $somelist )
+    <tr><td bgcolor=$color>$something</td></tr>
+#end
+#end
+
+
+#tablerows( $color $greatlakes )
+
+
+范围操作符
+范围操作符可以和#set 和#foreach 语句一起使用。有助于产生一个整数的目标数组，范围操作符有以下的结构：
+[n..m]
+ 
+ 
+n 和 m 都必须是整数或者可以产生整数。不管 m 大于或者小于n 都没关系；在m小于n这种情况下，范围可以向下计数。下面是使用范围操作符的例子：
+第一个例子
+#foreach( $foo in [1..5] )
+$foo
+#end
+ 
+第二个例子
+#foreach( $bar in [2..-2] )
+$bar
+#end
+ 
+第三个例子
+#set( $arr = [0..1] )
+#foreach( $i in $arr )
+$i
+#end
+ 
+第四个例子
+[1..3]
+ 
+ 
+他们分别产生一下输出
+1 2 3 4 5
+ 
+2 1 0 -1 -2
+ 
+0 1
+ 
+ [1..3]
+
