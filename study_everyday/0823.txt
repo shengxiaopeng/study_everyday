@@ -1,0 +1,9 @@
+  <context:component-scan base-package="com.jd.scf,com.jd.scf3">
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+<context:include-filter  是包含，但不仅仅包含
+
+
+尝试@Transaction

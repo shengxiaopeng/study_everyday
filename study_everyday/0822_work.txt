@@ -1,0 +1,48 @@
+===========DeptMapperExportImpl
+
+修改：
+
+  if (old == null) {
+                deptMapperDao.addDeptMapper(deptMapper);
+            } else {
+               // log.error("--exist mapper--" + deptMapper);
+                deptMapperDao.updateDeptMapper(deptMapper);
+            }
+
+
+===============给两个ExportImpl加@Service注解
+
+
+
+
+
+
+
+===========================
+DeptMapper.xml中
+
+AND source_no = #{sourceNo}}   多了个 "}"
+
+
+
+======时间的处理策略不一致
+
+    原来时间都是在mapper中  指定
+     当前两张表，mapper中没有指定
+ 
+     部门映射表的修改时间的类型为Timestamp？？
+             TimeStamp要求必须是yyyy-MM-dd HH:mm:ss[....]类型  而localstring 是yyyy-M-dd HH:mm:ss    要注意，月份不一样
+ 
+
+=====修改
+
+
+
+=================
+    修改时的校验
+    
+
+     修改最好是在前端想办法，在前端找到所有修改过的提交
+
+
+
