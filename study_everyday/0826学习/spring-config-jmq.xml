@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jmq="http://code.jd.com/schema/jmq"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.jd.com/schema/jmq
+	    http://code.jd.com/schema/jmq/jmq-1.0.xsd" default-autowire="byName">
+
+    <jmq:transport id="jmq.transport.job" address="${jmq.address}" user="${jmq.user}" password="${jmq.password}"  app="${jmq.app}"/>
+
+    <!-- for conumer -->
+    <bean id="poJmqSource" class="com.jd.scf.api.receivableCollect.source.jd.PoJmqSource">
+    </bean>
+
+    <bean id="payableJmqSource" class="com.jd.scf.api.receivableCollect.source.jd.PayableJmqSource">
+    </bean>
+
+    <bean id="vendorRequestJmqSource" class="com.jd.scf.api.receivableCollect.source.jd.VendorRequestJmqSource">
+    </bean>
+
+    <bean id="popJmqSource" class="com.jd.scf.api.receivableCollect.pop.source.PopJmqSource">
+    </bean>
+
+    <bean id="worldWidePayableJmqSource" class="com.jd.scf.api.receivableCollect.worldWide.source.WorldWidePayableJmqSource">
+    </bean>
+
+    <bean id="worldWideRequestJmqSource" class="com.jd.scf.api.receivableCollect.worldWide.source.WorldWideRequestJmqSource">
+    </bean>
+
+    <jmq:consumer id="jobConsumer" transport="jmq.transport.job">
+        <jmq:listener topic="${jmq.consumer.topic.po}" listener="poJmqSource"/>
+        <jmq:listener topic="${jmq.consumer.topic.payable}" listener="payableJmqSource"/>
+        <jmq:listener topic="${jmq.consumer.topic.vender.request}" listener="vendorRequestJmqSource"/>
+        <jmq:listener topic="${jmq.consumer.topic.pop.statement.info}" listener="popJmqSource"/>
+        <jmq:listener topic="${jmq.consumer.topic.worldwide.payable}" listener="worldWidePayableJmqSource"/>
+        <jmq:listener topic="${jmq.consumer.topic.worldwide.request}" listener="worldWideRequestJmqSource"/>
+    </jmq:consumer>
+
+    <!-- 源单据表状态变化 推送mq -->
+    <jmq:producer id="stdSourceDataSend" retryTimes="2" transport="jmq.transport.job"/>
+
+
+
+</beans>

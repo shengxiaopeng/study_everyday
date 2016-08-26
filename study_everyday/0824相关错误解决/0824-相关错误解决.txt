@@ -1,0 +1,38 @@
+
+错误提示
+org.springframework.web.multipart.MultipartException: 
+The current request is not a multipart request
+
+
+====================
+//enctype="multipart/form-data"
+
+
+
+为了使用 POI  操作excel
+在web的pom中添加
+ <dependency>
+            <groupId>com.jd.jr.cfe</groupId>
+            <artifactId>cfe-sdk-export</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+
+进一步工作
+1）完善部门映射与风控码表的 
+       添加
+        删除
+2）导入风控码表的完善
+
+
+3）mapper里面对应的timestamp也可以用 now()赋值
+
+
+4)jQuery的remove方法
+     $(this).parent().parent().remove();   this是按钮
+
+     是找到元素，调用remove即可 删除自身
+
+
+
+

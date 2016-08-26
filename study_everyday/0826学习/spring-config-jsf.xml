@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jsf="http://jsf.jd.com/schema/jsf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://jsf.jd.com/schema/jsf  http://jsf.jd.com/schema/jsf/jsf.xsd">
+
+
+    <jsf:registry id="jsfRegistry" index="i.jsf.jd.com"/>
+
+    <jsf:server id="jsf" protocol="jsf"/>
+
+    <!-- provider -->
+
+
+    <!-- 单据清洗、出入池任务调度-->
+    <bean id="taskJobExportImp" class="com.jd.scf.api.receivableCollect.service.task.export.imp.TaskJobExportImp"/>
+    <jsf:provider id="taskJobExport" interface="com.jd.scf.api.receivableCollect.service.task.export.TaskJobExport"
+                  alias="${jsf.service.alias}"
+                  ref="taskJobExportImp" server="jsf">
+    </jsf:provider>
+
+    <!-- 标准应收账款对外接口-->
+    <bean id="receivableExportImp"
+          class="com.jd.scf.api.receivableCollect.service.data.export.imp.ReceivableExportImp"/>
+    <jsf:provider id="receivableExport" interface="com.jd.scf.api.receivableCollect.export.receivable.ReceivableExport"
+                  alias="${jsf.service.alias}"
+                  ref="receivableExportImp" server="jsf">
+    </jsf:provider>
+
+    <!-- 应收账款源数据对外接口-->
+    <bean id="sourceExportImp" class="com.jd.scf.api.receivableCollect.export.imp.SourceExportImp"/>
+    <jsf:provider id="sourceExport" interface="com.jd.scf.api.receivableCollect.export.source.SourceExport"
+                  alias="${jsf.service.alias}"
+                  ref="sourceExportImp" server="jsf">
+    </jsf:provider>
+
+
+    <!-- 标准账款反作弊接口-->
+    <bean id="cheatJobExportImp" class="com.jd.scf.api.receivableCollect.cheat.CheatJobExportImp"/>
+    <jsf:provider id="cheatJobExport" interface="com.jd.scf.api.receivableCollect.export.cheat.CheatJobExport"
+                  alias="${jsf.service.alias}"
+                  ref="cheatJobExportImp" server="jsf">
+    </jsf:provider>
+
+    <!--POP相关跑批任务接口-->
+    <bean id="popBillTaskExportImpl" class="com.jd.scf.api.receivableCollect.service.data.export.imp.PopBillTaskExportImpl"/>
+    <jsf:provider id="popBillTaskExport" interface="com.jd.scf.api.receivableCollect.export.pop.PopBillTaskExport"
+                  alias="${jsf.pop.alias}" ref="popBillTaskExportImpl" server="jsf">
+    </jsf:provider>
+
+
+    <!--老保理用户查询-->
+    <jsf:consumer id="vendorInfoRpcService" interface="com.jd.fbs.rpc.VendorInfoRpcService"
+                  alias="${alias.fim}"
+                  protocol="jsf"
+                  timeout="60000" check="false"/>
+
+    <!--结算单查询-->
+    <jsf:consumer id="request4Service" interface="com.jd.supplier.saf.service.request.Request4Service"
+                  alias="FMS_SUPPLIER_BALANCE" timeout="30000" protocol="jsf"
+                  serialization="hessian" check="false" lazy="true">
+    </jsf:consumer>
+
+    <!--应收应付查询-->
+    <jsf:consumer id="payable4Service" interface="com.jd.supplier.saf.service.payable.Payable4Service"
+                  alias="FMS_SUPPLIER_BALANCE" timeout="10000" protocol="jsf"
+                  serialization="hessian" check="false" lazy="true">
+    </jsf:consumer>
+
+    <!--采购单查询-->
+    <jsf:consumer id="poQueryService" interface="com.jd.procurement.server.query.PoQueryOutInterface"
+                  protocol="jsf" alias="${jsf.bip.alias}" timeout="30000" check="false" lazy="true"/>
+
+    <!--买卖方查询-->
+    <jsf:consumer id="vendorInfoServiceExport"
+                  interface="com.jd.scf.component.export.jsf.vendor.VendorInfoRpcServiceExport"
+                  protocol="jsf" alias="${jsf.alias.vender.info}" timeout="30000" check="false" lazy="true"/>
+
+    <!--融资配置信息查询-->
+    <jsf:consumer id="finacingProportionExport"
+                  interface="com.jd.scf.component.export.jsf.finacingProportion.FinacingProportionExport"
+                  protocol="jsf" alias="${jsf.component.alias}" timeout="30000" check="false" lazy="true"/>
+
+    <!--合同查询-->
+    <jsf:consumer id="foContractExport" interface="com.jd.focrm.export.FoContractExport"
+                  protocol="jsf" alias="${jsf.focrm.alias}" timeout="30000" check="false" lazy="true"/>
+
+    <!--触发结算单还款-->
+    <jsf:consumer id="repaymentExport" interface="com.jd.scf.core.export.jsf.repayment.RepaymentExport"
+                  protocol="jsf" alias="${jsf.repayment.alias}" timeout="30000" check="false" lazy="true"/>
+    <!--融资比例接口-->
+    <jsf:consumer id="finacingExport" interface="com.jd.scf.component.export.jsf.finacing.FinacingExport"
+                  protocol="jsf" alias="${jsf.component.alias}" timeout="30000" check="false" lazy="true"/>
+
+    <!--POP接口-->
+    <jsf:consumer id="popPaySheetService" interface="com.jd.fms.popsettlementj.jsf.poppaysheet.PopPaySheetJsfService"
+                  alias="POP_PAYSHEET"
+                  protocol="jsf" timeout="10000" retries="0">
+        <jsf:parameter key="token" value="poppaysheet" hide="true"/>
+    </jsf:consumer>
+
+    <!--POP结算单接口-->
+    <jsf:consumer id="financeStatementForFactoringJsfProviderServer" interface="com.jd.pop.finance.center.service.spi.statement.FinanceStatementForFactoringServiceProvider"
+                  protocol="jsf" alias="${jsf.pop.finance.center}" timeout="10000" retries="0" >
+        <jsf:parameter key="token" value="2055f56556fd42a2b53d7ee66fa708ec" hide="true" />
+    </jsf:consumer>
+
+    <!--POP商家风控接口-->
+    <jsf:consumer id="creditDecisionService" interface="com.jd.finance.platform.CreditDecisionService" protocol="jsf" alias="CDS" timeout="5000" >
+    </jsf:consumer>
+
+
+</beans>

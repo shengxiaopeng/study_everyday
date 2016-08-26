@@ -1,0 +1,66 @@
+
+1)DeptMapper的删除
+
+     不容许物理删除，删除 是把该字段的 yn置0
+
+2)数据源编码唯一性的校验
+
+
+   风控码表  没有排序字段
+
+     jd_scf_finacing_customer_status
+
+3)
+    一定注意 
+   修改  修改时间的地方
+
+   <if test="modifiedTime ==null">modified_time = now(),</if>
+
+
+
+
+
+4)读excel
+
+
+
+        System.out.println(file.getName());
+        System.out.println(file.getOriginalFilename());
+
+        if(file==null||file.getSize()==0)
+            return "请选择合适的文件";
+
+        String fileName=file.getOriginalFilename();
+        if(!fileName.endsWith("xls")&&!fileName.endsWith("xlsx"))
+            return "请选择正确的文件类型";
+
+        StringBuilder builder=new StringBuilder();
+        List<RiskMapperConfig> listRisk=new ArrayList<RiskMapperConfig>();
+
+        try {
+            String[][] dataList = ExcelUtils.readExcel(new ByteArrayInputStream(file.getBytes()));
+
+            RiskMapperConfig config=null;
+            for (int i = 1; i <dataList.length ; i++) {
+
+                config=new RiskMapperConfig();
+                config.setSourceNo(dataList[i][0]);
+                config.setSourceName(dataList[i][1]);
+                config.setDocumentTypeCode(dataList[i][2]);
+                config.setStatusCode(dataList[i][3]);
+                config.setStatusCodeSjb(dataList[i][4]);
+                config.setInvalidNodeCode(dataList[i][5]);
+                config.setStateCode(dataList[i][6]);
+
+                config.setPoolFlag(Integer.parseInt(dataList[i][7]));
+                config.setRejectFlag(Integer.parseInt(dataList[i][8]));
+                config.setCleanFlag(Integer.parseInt(dataList[i][9]));
+                config.setRemark(dataList[i][10]);
+                listRisk.add(config);
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }

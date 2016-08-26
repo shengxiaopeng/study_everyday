@@ -1,0 +1,39 @@
+http://source.jd.com/app/scf-factoring-sdk.git
+
+ <jmq:transport id="jmq.transport" address="${jmq.address}" user="${jmq.user}" password="${jmq.password}" app="${jmq.producer.app}"
+                   epoll="false" channelMaxIdleTime="10000"/>
+    <!-- 放贷成功后jmq通知财务和看板 -->
+    <jmq:producer id="financingOverJMQSend" retryTimes="2" transport="jmq.transport"/>
+    <!-- 还款申请成功jmq通知财务和看板 -->
+    <jmq:producer id="repaymentApplyJMQSend" retryTimes="2" transport="jmq.transport"/>
+    <!-- 台账变更时，推送mq给看板系统 -->
+    <jmq:producer id="boardMqLoanInfoSend" retryTimes="2" transport="jmq.transport"/>
+
+
+1 关于消息队列
+
+    消息生产者  注册
+
+  
+    <!-- 源单据表状态变化 推送mq -->
+    <jmq:producer id="stdSourceDataSend" retryTimes="2" transport="jmq.transport"/>
+
+
+    @Resource(name = "stdSourceDataSend")
+    private MessageProducer stdSourceDataSend;
+
+
+2  关于JSF 服务
+       
+         ********
+
+         
+         在spring-config-jsf.xml  中予以配置  →  和dubbo 配置类似
+
+
+3 业务
+       SourceExport中写  查询接口
+       TaskJobExport 中写  通知(MQ) 接口
+
+
+   

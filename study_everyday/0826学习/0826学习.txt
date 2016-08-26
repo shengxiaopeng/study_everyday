@@ -1,0 +1,56 @@
+jmq学习
+
+    配置文件参考spring-config-jmq
+     
+              也是生产者-消费者的模式
+
+     接收============
+        是通过 实现接口 重写onMessage方法
+
+       public abstract class PopSource implements MessageListener,Source<String> {
+    private static final Logger POP_MESSAGE = LoggerFactory.getLogger("POP_MESSAGE");
+
+    @Autowired
+    private PopBillTaskService popBillTaskService;
+
+    @Override
+    public void onMessage(List<Message> messages) throws Exception {
+        if (messages == null || messages.isEmpty()) {
+            return;
+        }
+
+        for (Message message : messages) {
+            POP_MESSAGE.info("receive mq {}=>{}", message.getTopic(), message.getText());
+            receive((message.getText()));
+        }
+    }
+
+
+             发送===================
+
+          @Resource(name = "stdSourceDataSend")
+    private MessageProducer stdSourceDataSend;
+
+               //每一条源单据消息推送 MQ
+                    String mqJson = JSON.toJSONString(data);
+                    Message message=new Message(notifyInfoMQ,mqJson,data.getId().toString());
+
+                    stdSourceDataSend.send(message);
+
+
+jsf学习
+      可参考dubbo
+       配置文件见spring-config-jsf.xml
+
+
+       两侧共用相同的接口  
+ 
+
+
+
+
+
+               
+
+
+    
