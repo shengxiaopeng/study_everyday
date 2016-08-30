@@ -1,0 +1,11 @@
+简单看了下highcharts的官网
+
+    现在不只是一般的图表
+
+          有 highchart
+             highstock   股票类图表
+             highmap     地图
+             
+             highslide    an image, media and gallery viewer written in JavaScript
+                          
+                          看效果，像是弹出式的图片细节查看器   在黑马53讲居然有讲

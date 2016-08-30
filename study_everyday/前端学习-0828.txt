@@ -1,0 +1,175 @@
+
+x in o
+//判断对象有某属性成员？
+
+if(o.k){
+    //是否还有k属性
+}
+
+if(o[k]){
+   //是否含有k变量对应的值得属性
+   k='age'  //是否含有age属性
+}
+
+===与==
+===比较值 且 比较类型
+
+
+逻辑中断
+  善用 ||  → num||'no para'
+
+var m=1
+    n=2
+
+    n 具有全局作用域，可通过delete删除
+
+delete作用：
+ 1）删除数组中的元素，是把对应位置的元素置为undefined，数组长度不变
+ 2）删除对象的属性或方法
+ 3）删除一个没有用var声明的变量
+
+
+js执行
+   遇到script 加载script
+        
+   
+   预解析时加载所有的声明
+
+
+============================
+js中有一个特性  → NaN与自己不等
+
+
+
+函数的三种形式：
+ 1 声明式
+ 2 字面量 
+
+ 3 Function
+
+  声明式函数不能放在表达式中
+    若放在表达式中
+          1）报错
+          2）转换为了表达式
+
+
+
+移除 最好是用remove
+     不要用innerHtml 无法释放控件绑定的事件，内存耗费了
+
+
+只要是个函数，就有prototype属性
+
+=====
+__proto__与 prototype
+
+对象的 __proto__属性与 创建该对象的构造函数的prototype是一个东西
+__proto__是非标准属性 开发最好不用
+
+
+
+====================
+对象的
+typeof  统一返回 object，无法返回具体的类型
+每一个对象的constructor属性描述的是其构造函数
+
+obj.constructor
+
+
+
+====
+function Person(){
+
+        }
+
+        console.log(Person.name)   //函数都有那么属性
+
+        var p=new Person();
+
+        console.log(typeof p);
+
+        console.log(p.constructor);
+
+        console.log(p.constructor.name); //IE 8 没有没有那么属性
+
+        ctr= p.constructor+"";
+
+        r=/function\s(.+?)\(/;
+
+        var className= r.exec(ctr)[1];
+        console.log("regRex:"+className)
+
+
+
+在IE8中函数没有name属性
+其他浏览器一般都有
+
+
+
+================================================
+三目运算符与逻辑中断
+A?A:B
+可以优化为  A||B
+
+
+===========================
+console.log(Function.prototype.isPrototypeOf(Person.prototype));    //false
+       console.log(Function.prototype.isPrototypeOf(Person));               //true
+
+
+
+注意要把   function FF(){}与FF  一般情况下，可以看成一个东西
+
+
+
+
+
+====
+转换数组
+context=[context]
+
+
+
+======函数式编程  callee的使用
+
+factorial=function(para){
+      
+         return para==0?1:para*arguments.callee(para-1);
+
+	}
+
+	var res=factorial(10);
+
+    console.log(res);
+
+  var res2= function(para){
+      
+         return para==0?1:para*arguments.callee(para-1);
+
+
+
+=======================
+内部函数的作用域链，由两部分：内部函数自身的活动对象，内部函数的一个属性”[[scope]]”,
+而”[[scope]]”的值为其外部函数outter的活动对象，其更外部的全局global对象的变量对象。
+这样，如果在inner中要使用外部的自由变量，显然可以很方便的沿着作用域链上溯。
+
+
+
+
+
+
+事实上，函数的属性”[[scope]]”会在函数对象创建的时候被创建，这个特性在下一小节中讨论，而不论函数的嵌套层次有多深，它的”[[scope]]”总会引用所有的位于其外层的上下文中的变量对象(在函数中，为活动对象)。
+
+	}(15);
+   
+    console.log(res2);
+
+
+
+
+
+
+
+
+
+ 
