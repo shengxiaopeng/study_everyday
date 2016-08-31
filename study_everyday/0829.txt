@@ -1,0 +1,163 @@
+rQuickRegex=/^(:?#([\w-]+)|\.([\w-]+)|(\w+)|(\*))$/;
+
+沙箱?
+
+
+
+=======================能力检测==================
+getElementsByClassName
+
+低版本的IE没有，要进行能力检查
+
+if(document.getElementsByClassName){
+
+}
+
+这样效率极低，因为document本身是没有此方法，要不断的向上找原型
+到Document才有
+
+如果每次都这样检测，效率太低
+
+可提供一个support对象，里面提供所有与方法名相同的属性，值均为布尔值
+
+在浏览器加载js的开始的时候，就进行能力判断
+
+此后凡是涉及能力判断的地方，调用support对象即可，不可搜索原型链
+
+support={}
+support.getElementsByClassName=!!document.getElementsByClassName;  //第一个感叹号，就已经将其转换为布尔值
+
+
+======================================
+Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组  
+ ------伪数组转化为数组
+
+
+
+=================================
+兼容性的解决  除了if判断之外
+也可以用try -catch - 解决
+
+==========
+ss=ss.replace(/^\s+|\s+$/g,'');
+
+
+
+
+=======================================
+//级联函数
+
+function Student(){
+
+}
+
+Student.prototype={
+    setFace:function(){
+         this.face="face";
+         return this;
+    },
+    setArm:function(){
+    	this.arm="arm";
+    	return this;
+    },
+    setLeg:function(){
+    	this.leg="leg";
+    	return this;
+    }
+
+}
+
+var s=new Student();
+s.setLeg().setArm().setFace();
+
+//alert(s);
+console.log(s);
+
+
+//js中的柯里化
+
+var curryit=function(fn){
+   
+      var args= [].slice.call(arguments,1);
+
+       return function(){
+         var newArgs=  [].concat.apply(args,arguments);
+         fn.apply(null,newArgs); 
+
+       }
+
+}
+
+
+var f1=curryit(function(){
+   var args= [].slice.call(arguments);
+
+   console.log(args.join(';'));
+
+},'结发妻子');
+
+f1('小三','小四');
+
+
+//惰性函数
+/*function createXHR() {
+
+	var xhr = null;
+
+	if (typeof XMLHttpRequest != "underfined") {
+
+		xhr = new XMLHttpRequest();
+
+			createXHR = function createXHR(){
+
+					return new XMLHttpRequest();
+
+				}
+
+	}else{
+
+			try{
+
+					xhr = new ActiveXObject("Msxml2.XMLHTTP");
+
+					createXHR = function createXHR() {
+
+							return new ActiveXObject("Msxml2.XMLHTTP");
+
+								}
+
+			}catch(e){
+
+					try{
+
+						xhr = new ActiveXObject("Microsoft.XMLHTTP");
+
+						createXHR = function createXHR() {
+
+										return new ActiveXObject("Microsoft.XMLHTTP");
+
+									}
+
+					}catch(e){
+
+						xhr = null;
+
+						createXHR = function createXHR() {
+
+								return null;
+
+								}
+
+					}
+
+			}
+
+		}
+
+}
+
+*/
+
+
+
+
